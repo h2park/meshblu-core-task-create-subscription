@@ -1,8 +1,10 @@
-_    = require 'lodash'
-http = require 'http'
+_                   = require 'lodash'
+http                = require 'http'
+SubscriptionManager = require 'meshblu-core-manager-subscription'
 
 class CreateSubscription
-  constructor: (options={}) ->
+  constructor: ({@datastore,@uuidAliasResolver}) ->
+    @subscriptionManager = new SubscriptionManager {@datastore,@uuidAliasResolver}
 
   _doCallback: (request, code, callback) =>
     response =
@@ -13,9 +15,9 @@ class CreateSubscription
     callback null, response
 
   do: (request, callback) =>
-    {uuid, messageType, options} = request.metadata
-    message = JSON.parse request.rawData
-
-    return @_doCallback request, 204, callback
+    {subscriberUuid,emitterUuid,type} = request.metadata.options
+    @subscriptionManager.create {subscriberUuid,emitterUuid,type}, (error) =>
+      return @_doCallback request, error.code || 500, callback if error
+      return @_doCallback request, 201, callback
 
 module.exports = CreateSubscription
