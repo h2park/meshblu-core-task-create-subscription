@@ -59,7 +59,7 @@ describe 'CreateSubscription', ->
           expect(subscriptions).to.deep.equal []
           done()
 
-      it 'should return a 201', ->
+      it 'should return a 422', ->
         expectedResponse =
           metadata:
             responseId: 'its-electric'
