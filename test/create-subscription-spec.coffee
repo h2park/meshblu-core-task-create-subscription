@@ -21,8 +21,7 @@ describe 'CreateSubscription', ->
         request =
           metadata:
             responseId: 'its-electric'
-            options: {subscriberUuid:'superman', emitterUuid: 'spiderman', type:'broadcast'}
-          rawData: '{}'
+          rawData: JSON.stringify {subscriberUuid:'superman', emitterUuid: 'spiderman', type:'broadcast'}
 
         @sut.do request, (error, @response) => done error
 
@@ -48,8 +47,7 @@ describe 'CreateSubscription', ->
         request =
           metadata:
             responseId: 'its-electric'
-            options: {emitterUuid: 'spiderman', type:'broadcast'}
-          rawData: '{}'
+          rawData: JSON.stringify {emitterUuid: 'spiderman', type:'broadcast'}
 
         @sut.do request, (error, @response) => done error
 

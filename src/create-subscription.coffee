@@ -15,7 +15,11 @@ class CreateSubscription
     callback null, response
 
   do: (request, callback) =>
-    {subscriberUuid,emitterUuid,type} = request.metadata.options
+    try
+      {subscriberUuid,emitterUuid,type} = JSON.parse request.rawData
+    catch error
+      return @_doCallback request, 500, callback
+      
     @subscriptionManager.create {subscriberUuid,emitterUuid,type}, (error) =>
       return @_doCallback request, error.code || 500, callback if error
       return @_doCallback request, 201, callback
