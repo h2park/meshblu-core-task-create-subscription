@@ -5,11 +5,12 @@ CreateSubscription = require '../'
 
 describe 'CreateSubscription', ->
   beforeEach (done) ->
+    db = mongojs 'subscription-manager-test', ['subscriptions']
     @datastore = new Datastore
-      database: mongojs 'subscription-manager-test'
+      database: db
       collection: 'subscriptions'
 
-    @datastore.remove done
+    db.subscriptions.remove done
 
   beforeEach ->
     @uuidAliasResolver = resolve: (uuid, callback) => callback(null, uuid)
